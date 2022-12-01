@@ -1,0 +1,336 @@
+$blue-translucent: rgba(53, 171, 169, 0.4);
+$blue: rgba(53, 171, 169, 1);
+$orange-translucent: rgba(234, 142, 72, 0.4);
+$orange: rgba(234, 142, 72, 1);
+$grey-translucent: rgba(40, 40, 40, 0.4);
+$grey: rgb(150, 150, 150);
+
+// https://www.w3schools.com/howto/howto_css_overlay.asp
+
+body.loading {
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+#overlayCSS {
+    position: fixed; /* Sit on top of the page content */
+    display: block; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+    #text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 3rem;
+        color: white;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+    }
+}
+
+#overlay {
+    opacity: 0.85;
+}
+
+.legend-slice {
+    width: 0.5em;
+    height: 1em;
+    display: inline-block;
+}
+
+.legend-text {
+    font-size: 1.3rem;
+}
+
+html {
+    font-family: "Public Sans";
+}
+
+footer {
+    text-align: center;
+}
+
+.header {
+    text-align: center;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.small-text {
+    font-size: 0.75rem;
+}
+
+#ice-hockey-svg {
+    max-height: 80vh;
+}
+
+#possession-perimeter {
+    pointer-events: none;
+}
+
+footer {
+    font-size: 0.75rem;
+}
+
+h1 {
+    margin-bottom: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+circle {
+    &.blue {
+        fill: $blue;
+        stroke: white;
+        stroke-width: 0.4;
+    }
+
+    &.orange {
+        fill: $orange;
+        stroke: white;
+        stroke-width: 0.4;
+    }
+}
+.stick {
+    stroke-width: 0.3;
+    stroke: #444;
+    fill: transparent;
+}
+
+.stick-head {
+    stroke-width: 0.5;
+    stroke: #ccc;
+    fill: transparent;
+}
+
+.helmet {
+    fill: $orange;
+}
+
+.helmet-grating {
+    stroke-width: 0.2;
+    stroke: white;
+    fill: transparent;
+}
+
+.grating-back {
+    fill: $orange-translucent;
+}
+
+.dot-text {
+    fill: white;
+    font-size: 0.125rem;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: central;
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+}
+
+.dot-text.large {
+    font-size: 0.175rem;
+}
+
+#attack-arrow-svg {
+    fill: $blue;
+}
+// stolen from Bootstrap
+
+.alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border: 1px solid #f5c2c7;
+    border-bottom: 1px solid #f5c2c7;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+    .alert-text {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+
+line {
+    stroke-width: 0.7;
+
+    &.blue {
+        stroke: $blue-translucent;
+    }
+
+    &.orange {
+        stroke: $orange-translucent;
+    }
+
+    &.overall {
+        stroke: $grey-translucent;
+    }
+}
+
+#custom-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 1rem;
+    padding: 1rem;
+    border: 2px black solid;
+
+    > div {
+        border-bottom: 1px black solid;
+        padding: 0 1rem;
+        margin-top: 1rem;
+    }
+
+    h3 {
+        // text-transform: capitalize;
+        text-decoration-line: underline;
+        text-decoration-color: black;
+        text-decoration-style: solid;
+        text-decoration-thickness: 0.2rem;
+        margin-top: 0;
+        margin-bottom: 0.2rem;
+
+        &.blue {
+            text-decoration-color: $blue;
+        }
+
+        &.orange {
+            text-decoration-color: $orange;
+        }
+
+        &.overall {
+            text-decoration-color: $grey;
+        }
+
+        &.probability-header {
+            // font-size: 0.7em;
+        }
+    }
+
+    select {
+        font-family: "Public Sans";
+        margin-left: 0.5rem;
+        font-size: 1rem;
+    }
+
+    label {
+        font-weight: 600;
+        display: flex;
+        gap: 1rem;
+        margin: 0.5rem 0;
+    }
+
+    #second-last-shot-widget {
+        padding-bottom: 1rem;
+    }
+}
+
+#probability-widget {
+    text-align: center;
+    font-size: 1.2rem;
+    @for $i from 100 through 900 {
+        p.weight-#{$i} {
+            font-weight: $i;
+        }
+    }
+}
+@media only screen and (max-width: 900px) {
+    .layout {
+        display: block;
+    }
+    // .center {
+    //   display: block;
+    // }
+    #ice-hockey-svg {
+        width: 90vw;
+        touch-action: none;
+    }
+
+    #custom-bar {
+        flex-direction: row;
+        justify-content: flex-start;
+        overflow-x: auto;
+
+        > div {
+            border-bottom: 0;
+            border-right: 1px black solid;
+            margin-right: 1rem;
+        }
+
+        .alert-danger {
+            border-right: 1px solid #f5c2c7;
+        }
+    }
+}
+
+// css-scan button; base from duolingo?
+
+/* CSS */
+button {
+    appearance: button;
+    background-color: $grey;
+    border: solid transparent;
+    border-radius: 5px;
+    border-width: 0 0 4px;
+    box-sizing: border-box;
+    color: black;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+    outline: none;
+    overflow: visible;
+    padding: 0.5rem;
+    text-align: center;
+    touch-action: manipulation;
+    transform: translateZ(0);
+    transition: filter 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 100%;
+}
+
+button:after {
+    background-clip: padding-box;
+    background-color: #ccc;
+    border: solid transparent;
+    border-radius: 5px;
+    border-width: 0 0 4px;
+    bottom: -4px;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+button.selected:after {
+    background-color: $grey;
+}
+
+button:hover:not(:disabled) {
+    filter: brightness(1.1);
+    -webkit-filter: brightness(1.1);
+}

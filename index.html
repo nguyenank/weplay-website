@@ -450,7 +450,7 @@
                 );
                 await pyodide.loadPackage(["numpy", "scipy", "scikit-learn", "joblib"]);
                 console.log("pre-fetch")
-                let response = await fetch('https://github.com/cmarkey/weplay/blob/main/Passing%20Analysis/code/rf_1_1_1.pkl.zip?raw=true')
+                let response = await fetch('https://raw.githubusercontent.com/cmarkey/weplay/main/Passing%20Analysis/code/rf_1_1_1.pkl.zip');
                 console.log(response.status);
                 let contents = await response.arrayBuffer();
                 await pyodide.unpackArchive(contents, 'zip');

@@ -23,6 +23,13 @@ let orangePoints = [
     { x: -55, y: 0, id: "D6" }
 ];
 
+const DOMAINS = {
+    3: [-1,1],
+    4: [0, 1],
+    5: [0, 0.25],
+    6: [0, 0.175]
+}
+
 let metric;
 
 function coordTransform(point) {
@@ -385,16 +392,30 @@ function run_model() {
 
     metrics = pyodide.globals.get("metrics");
     results = metrics(x_js, y_js, vx_js, vy_js, goalie_js, puck_js, off_js, 55, metric == 3 ? 0.05 : 0.03);
+    console.log(results.danger_level.toJs()[0]);
+    updateProbability(results.danger_level.toJs()[0]);
     plot_metric(
         metric,
         metric === 3 ? results.grid.toJs() : results.triangles.toJs(),
-        results.domains.toJs(),
         _.find(overall, (a) => a.id == getPuckCarrier())
     );
     results.destroy();
 }
 
-function plot_metric(metric, values, domains, puck) {
+function updateProbability(prob) {
+    d3.select("#probability-widget")
+        .select("p")
+        .text((prob * 100).toFixed(2) + "%")
+        .attr(
+            "class",
+            // 0 - 20 -> font weight 100
+            // X0 - X9.99 -> font weight X00
+            // 3.g. 42.2 -> font weight 400
+            `weight-${prob * 100 < 20 ? 100 : Math.floor(prob * 10) * 100}`
+        );
+}
+
+function plot_metric(metric, values, puck) {
     const areaControl = metric === 3;
 
     areaControl
@@ -406,7 +427,7 @@ function plot_metric(metric, values, domains, puck) {
 
     const colorPalette = d3
         .scaleSequential()
-        .domain(areaControl ? [-1, 1] : domains[metric])
+        .domain(DOMAINS[metric])
         .interpolator(d3.interpolateRdBu);
 
     d3.select("#transformations").select("#overlay").selectAll("*").remove();
@@ -536,6 +557,13 @@ function setup() {
     }
     setUpButtons();
     setupLegend();
+
+    const prob = d3
+        .select("#custom-bar")
+        .append("div")
+        .attr("id", "probability-widget");
+    prob.append("h3").attr("class", "probability-header").text("Dangerous Situation Probability");
+    prob.append("p").text("0.00%").attr("class", "weight-100");
 }
 
 setup();

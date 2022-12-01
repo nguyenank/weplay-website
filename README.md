@@ -1,7 +1,7 @@
 # Whockey Evaluation of the Play (WePlay) Website
-## a Big Data Cup collaboration for SEAHAC 2022
+### A Big Data Cup collaboration for SEAHAC 2022
 
-An interactive webtool, [available here](https://highway-to-the-danger-zone.netlify.app/), utilizing an updated version of the Highway model created by Carlie Markey, Nayan Patel, An Nguyen, and Ben Howell and the passing analysis models created by Alon Harell, Robyn Ritchie, and Phil Shreeves, both originally created for the Big Data Cup 2022.
+An interactive webtool, [available here](https://weplay.netlify.app/), utilizing an updated version of the Highway model created by Carlie Markey, Nayan Patel, An Nguyen, and Ben Howell and the passing analysis models created by Alon Harell, Robyn Ritchie, and Phil Shreeves, both originally created for the Big Data Cup 2022.
 
 <!-- ![A screenshot of the web application.](./screenshot.png) -->
 

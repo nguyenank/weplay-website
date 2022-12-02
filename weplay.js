@@ -30,7 +30,7 @@ const DOMAINS = {
     6: [0, 0.25]
 }
 
-let MODEL_RUNNING = false;
+let TOGGLE_ON = true;
 
 function coordTransform(point) {
     return { ...point, x: point.x + 100, y: 42.5 - point.y };
@@ -133,17 +133,17 @@ function setUpPointSet(points, color) {
         .attr("class", color + "-dot")
         .attr("data-id", (d) => d.id)
         .on("mouseup", function (e) {
-            // if (!MODEL_RUNNING) {
                 if (e.shiftKey && color == "blue") {
                     changePuckCarrier(d3.select(this).attr("data-id"));
                 }
+                if (TOGGLE_ON) {
                 run_model();
-            // }
+            }
         })
         .on("touchend", function (e) {
-            // if (!MODEL_RUNNING) {
+            if (TOGGLE_ON) {
                 run_model();
-            // }
+            }
         })
         // .on("dblclick", function () {
         //     if (color == "blue") {
@@ -331,6 +331,29 @@ function setUpPointSet(points, color) {
     changePuckCarrier("O1");
 }
 
+function setUpToggle() {
+    const toggleDiv = d3.select("#custom-bar").append("div").attr("id", "toggle-div");
+    const toggle = toggleDiv.append("div").attr("style", "display:flex;");
+    toggle.append("label").text("Run Model Automatically:")
+    toggle.append("input").attr("id", "switch").attr("type", "checkbox").attr("checked", true).on("change", ()=>{
+        if (TOGGLE_ON == true) {
+            TOGGLE_ON = false;
+            d3.select("#run-models-btn").attr("disabled", undefined);
+        } else {
+            TOGGLE_ON = true;
+            d3.select("#run-models-btn").attr("disabled", true);
+        }
+    })
+    toggle.append("label").attr("for", "switch").attr("id", "toggle-label");
+
+    toggleDiv.append("button").text("Rerun Models").attr("id","run-models-btn").attr("disabled", true).on("click", () => {
+        if (TOGGLE_ON) {
+            run_model()
+        }
+    });
+
+}
+
 function setUpButtons() {
     const buttons = [
         { id: "metric0", label: "Rink Control" },
@@ -499,6 +522,9 @@ function setup() {
         .attr("filter", "url(#strongFilter)")
         .append("g")
         .attr("id", "mst");
+
+    setUpToggle();
+
     for (const color in all_points) {
         const points = all_points[color].original;
         let colorG = d3
@@ -544,6 +570,7 @@ function setup() {
                 }))
             };
             setUpPointSet(all_points[color].original, color);
+            run_model();
         });
 
         setUpPointSet(_.slice(points, 0, color === "blue" ? 5 : 6), color);

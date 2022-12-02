@@ -26,7 +26,7 @@ let orangePoints = [
 const DOMAINS = {
     3: [-1,1],
     4: [0, 1],
-    5: [0, 0.1],
+    5: [0, 0.05],
     6: [0, 0.25]
 }
 
@@ -334,7 +334,7 @@ function setUpPointSet(points, color) {
 function setUpToggle() {
     const toggleDiv = d3.select("#custom-bar").append("div").attr("id", "toggle-div");
     const toggle = toggleDiv.append("div").attr("style", "display:flex;");
-    toggle.append("label").text("Run Model Automatically:")
+    toggle.append("label").text("Run Models Automatically:")
     toggle.append("input").attr("id", "switch").attr("type", "checkbox").attr("checked", true).on("change", ()=>{
         if (TOGGLE_ON == true) {
             TOGGLE_ON = false;
@@ -419,15 +419,21 @@ function run_model() {
 }
 
 function updateProbability(prob) {
+    THRESHOLDS = [[0.2, "Little to No Danger", 100], [0.3, "Slight Danger", 300], [0.4, "Some Danger", 500], [0.5, "Danger", 700], [1,"Extreme Danger", 900]];
+    
+    let text, weight;
+    for (const [threshold, label, font_weight] of THRESHOLDS) {
+        if (prob < threshold) {
+            [text, weight] = [label, font_weight]
+            break;
+        }
+    }
     d3.select("#probability-widget")
         .select("p")
-        .text((prob * 100).toFixed(2) + "%")
+        .text(text)
         .attr(
             "class",
-            // 0 - 20 -> font weight 100
-            // X0 - X9.99 -> font weight X00
-            // 3.g. 42.2 -> font weight 400
-            `weight-${prob * 100 < 20 ? 100 : Math.floor(prob * 10) * 100}`
+            `weight-${weight}`
         );
 }
 

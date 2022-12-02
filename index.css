@@ -201,6 +201,9 @@ line.overall {
 #custom-bar h3.overall {
   text-decoration-color: rgb(150, 150, 150);
 }
+#custom-bar h3.probability-header {
+  font-size: 1em;
+}
 #custom-bar select {
   font-family: "Public Sans";
   margin-left: 0.5rem;

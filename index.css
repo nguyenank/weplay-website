@@ -124,6 +124,8 @@ circle.orange {
   user-select: none;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
+  touch-action: none;
+  --ms-touch-aciton: none;
 }
 
 .dot-text.large {

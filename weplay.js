@@ -26,11 +26,11 @@ let orangePoints = [
 const DOMAINS = {
     3: [-1,1],
     4: [0, 1],
-    5: [0, 0.25],
-    6: [0, 0.175]
+    5: [0, 0.1],
+    6: [0, 0.25]
 }
 
-let metric;
+let MODEL_RUNNING = false;
 
 function coordTransform(point) {
     return { ...point, x: point.x + 100, y: 42.5 - point.y };
@@ -133,13 +133,17 @@ function setUpPointSet(points, color) {
         .attr("class", color + "-dot")
         .attr("data-id", (d) => d.id)
         .on("mouseup", function (e) {
-            if (e.shiftKey && color == "blue") {
-                changePuckCarrier(d3.select(this).attr("data-id"));
-            }
-            run_model();
+            // if (!MODEL_RUNNING) {
+                if (e.shiftKey && color == "blue") {
+                    changePuckCarrier(d3.select(this).attr("data-id"));
+                }
+                run_model();
+            // }
         })
         .on("touchend", function (e) {
-            run_model();
+            // if (!MODEL_RUNNING) {
+                run_model();
+            // }
         })
         // .on("dblclick", function () {
         //     if (color == "blue") {
@@ -357,25 +361,10 @@ function setUpButtons() {
 }
 
 function run_model() {
-    // x_js = [
-    //     28.5738, 44.3415, 46.2854, 49.4131, 43.6537, 20.1617, 19.1869,
-    //     13.3854, 20.0018
-    // ];
-    // y_js = [
-    //     49.31514, 48.25991, 70.17542, 13.65429, 28.5197, 38.44596,
-    //     36.80571, 38.32781, 22.03946
-    // ];
-    // vx_js = [
-    //     6.725073, 4.964445, -3.097599, 14.252625, 4.286796, 1.925091,
-    //     -2.295729, -0.294258, 6.464229
-    // ];
-    // vy_js = [
-    //     -7.1037417, -7.967796, -6.4446342, 6.5618985, -10.9455216,
-    //     -4.7444208, -4.1465373, -0.3377985, -5.4265284
-    // ];
-    // goalie_js = 7;
-    // puck_js = 3;
-    // off_js = [-1, -1, 1, 1, -1, 1, -1, -1, 1];
+    // d3.select("body").style("cursor","wait");
+    // MODEL_RUNNING = true;
+    // interact(".blue-dot").draggable({enabled: false});
+    // interact(".orange-dot").draggable({enabled: false});
     overall = [
         ...shiftedPoints(all_points["blue"]),
         ...shiftedPoints(all_points["orange"])
@@ -391,8 +380,8 @@ function run_model() {
     const metric = parseInt(d3.select(".selected").attr("id").slice(-1)) + 3;
 
     metrics = pyodide.globals.get("metrics");
+
     results = metrics(x_js, y_js, vx_js, vy_js, goalie_js, puck_js, off_js, 55, metric == 3 ? 0.05 : 0.03);
-    console.log(results.danger_level.toJs()[0]);
     updateProbability(results.danger_level.toJs()[0]);
     plot_metric(
         metric,
@@ -400,6 +389,10 @@ function run_model() {
         _.find(overall, (a) => a.id == getPuckCarrier())
     );
     results.destroy();
+    // interact(".blue-dot").draggable({enabled: true});
+    // interact(".orange-dot").draggable({enabled: true});
+    // MODEL_RUNNING = false;
+    // d3.select("body").style("cursor","auto");
 }
 
 function updateProbability(prob) {

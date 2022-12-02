@@ -448,13 +448,11 @@
                   sys.version
               `)
                 );
-                await pyodide.loadPackage(["numpy", "scipy", "scikit-learn", "joblib"]);
-                console.log("pre-fetch")
-                let response = await fetch('https://raw.githubusercontent.com/cmarkey/weplay/main/Passing%20Analysis/code/rf_1_1_1.pkl.zip');
+                await pyodide.loadPackage(["numpy", "scipy", "scikit-learn"]);
+                let response = await fetch('https://raw.githubusercontent.com/cmarkey/weplay/main/Passing%20Analysis/code/finalized_rf_model.zip');
                 console.log(response.status);
                 let contents = await response.arrayBuffer();
                 await pyodide.unpackArchive(contents, 'zip');
-                console.log("post-writing");
                 pyodide.runPython(
                     await (
                         await fetch(
@@ -466,6 +464,7 @@
             main().finally(() => {
                 test = pyodide.globals.get("test");
                 console.log(test());
+                test.destroy();
                 d3.select("#overlayCSS").style("display", "none");
                 d3.select("body").classed("loading", false);
                 run_model();

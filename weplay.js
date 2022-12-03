@@ -347,9 +347,7 @@ function setUpToggle() {
     toggle.append("label").attr("for", "switch").attr("id", "toggle-label");
 
     toggleDiv.append("button").text("Rerun Models").attr("id","run-models-btn").attr("disabled", true).on("click", () => {
-        if (TOGGLE_ON) {
             run_model()
-        }
     });
 
 }

@@ -377,7 +377,9 @@ function setUpButtons() {
                 .classed("selected", function (d, i) {
                     return metric == d3.select(this).attr("id");
                 });
-            run_model();
+            if (TOGGLE_ON) {
+                run_model();
+            }
         });
 }
 
@@ -574,7 +576,9 @@ function setup() {
                 }))
             };
             setUpPointSet(all_points[color].original, color);
-            run_model();
+            if (TOGGLE_ON) {
+                run_model();
+            }
         });
 
         setUpPointSet(_.slice(points, 0, color === "blue" ? 5 : 6), color);
